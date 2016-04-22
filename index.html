@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>tabtab</title>
+  <meta name="description" content="tab completion helpers, for node cli programs. Inspired by npm completion.">
+  <meta name="viewport" content="width=device-width">
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-deep_orange.min.css">
+
+  <style>
+  .tomdox-main {
+    margin: 10px;
+    padding: 40px;
+  }
+
+  .tomdox .mdl-layout__content {
+    background-color: #f2f2f2;
+  }
+
+  .tomdox-main {
+    background-color: #fff;
+  }
+
+  .tomdox .mdl-layout-title a {
+    text-decoration: none;
+  }
+
+  .tomdox .mdl-layout-title .material-icons {
+    vertical-align: text-top;
+  }
+
+  .tomdoc pre {
+    padding: 16px;
+  }
+  </style>
+</head>
+<body>
+  <div class="tomdox mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+        <div class="mdl-layout-spacer"></div>
+      </div>
+    </header>
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <a href="https://mklabs.github.io/tabtab/">tabtab</a>
+        <i class="material-icons">keyboard_tab</i>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="https://mklabs.github.io/tabtab/lib/complete/index.html">lib/complete.js</a>
+        <a class="mdl-navigation__link" href="https://mklabs.github.io/tabtab/lib/debug/index.html">lib/debug.js</a>
+        <a class="mdl-navigation__link" href="https://mklabs.github.io/tabtab/lib/index.html">lib/index.js</a>
+        <a class="mdl-navigation__link" href="https://mklabs.github.io/tabtab/lib/commands/index.html">lib/commands/index.js</a>
+      </nav>
+    </div>
+    <main class="mdl-layout__content">
+      <div class="page-content tomdox-main">
+        <h1>tabtab <a href="http://travis-ci.org/mklabs/node-tabtab"><img src="https://secure.travis-ci.org/mklabs/node-tabtab.png" alt="Build Status"></a></h1>
+<p>An npm package to do some custom command line<code>&lt;tab&gt;&lt;tab&gt;</code> completion for
+any system command.</p>
+<p>Using the node api and JS to provide your own completion, for both bash/zsh shell.</p>
+<p>Made possible using the same technique as npm (whose completion is quite
+awesome) relying on a bash/zsh completion shell script bridge to do the
+actual completion from node's land.</p>
+<h2>Install</h2>
+<p>Latest released version (when it'll get released)</p>
+<pre><code>npm install tabtab
+</code></pre>
+<h2>Features</h2>
+<blockquote>
+<p>wip</p>
+</blockquote>
+<ul>
+<li>Binary to manage and discover completion</li>
+<li>Automatic completion from help output</li>
+<li><code>tabtab install</code> in package.json install script creates the completion file on user system</li>
+<li>Automatic completion with package.json <code>completion|tabtab</code> property</li>
+</ul>
+<h2>Example</h2>
+<p>You can add completion pretty easily in your node cli script:</p>
+<pre><code class="language-js">var tab = require('tabtab')();
+
+// General handler. Gets called on `foobar &lt;tab&gt;` and `foobar stuff ... &lt;tab&gt;`
+tab.on('foobar', function(data, done) {
+  // General handler
+  done(null, ['foo', 'bar']);
+});
+
+// Specific handler. Gets called on `foobar list &lt;tab&gt;`
+tab.on('list', function(data, done) {
+  done(null, ['file.js', 'file2.js']);
+});
+</code></pre>
+<p>These events are emitted whenever the command <code>completion -- ..</code> is triggered.</p>
+<p>The <code>data</code> object holds interesting value to drive the output of the
+completion:</p>
+<ul>
+<li><code>line</code>: full command being completed</li>
+<li><code>words</code>: number of word</li>
+<li><code>point</code>: cursor position</li>
+<li><code>partial</code>: tabing in the middle of a word: foo bar baz bar foobar&lt;tab&gt;&lt;tab&gt;rrrrrr</li>
+<li><code>last</code>: last word of the line</li>
+<li><code>lastPartial</code>: last partial of the line</li>
+<li><code>prev</code>: the previous word</li>
+</ul>
+<h2>Completion Install</h2>
+<p>Installing the completion for your cli app is done very much <a href="https://docs.npmjs.com/cli/completion">like npm
+does</a>:</p>
+<pre><code>. &lt;(pkgname completion)
+</code></pre>
+<p>It'll enables tab-completion for the <code>pkgname</code> executable. Adding it to
+your ~/.bashrc or ~/.zshrc will make the completions available
+everywhere (not only the current shell).</p>
+<h2>CLI</h2>
+<p>tabtab provides a binary to manage and discover completion on the user system.
+It provides utilities for install, removing a completion file, to discover and
+enable additional completion etc.</p>
+<pre><code>$ tabtab &lt;command&gt; [options]
+
+Options:
+  -h, --help              Show this help output
+  -v, --version           Show package version
+  -s, --silent            Silent mode for commands like install
+  -y, --yes               Skips confirmation prompts
+
+Commands:
+
+  install                 Install and enable completion file on user system
+  uninstall               Undo the install command
+  list                    List the completion files managed by tabtab
+  search                  Search npm registry for tabtab completion files / dictionaries
+  add                     Install additional completion files / dictionaries
+  rm/remove               Uninstall completion file / dictionnary
+</code></pre>
+<h3>tabtab install</h3>
+<pre><code>$ tabtab install --help
+
+Options:
+  --zshrc                 Source completion in ~/.zshrc
+  --bashrc                Source completion in ~/.bashrc
+  --auto                  Let tabtab check for user environment to edit
+                          either zshrc or bashrc
+  --system                Use /etc/bash_completion.d system directory
+
+  --console               Outputs script to console and writes nothing
+</code></pre>
+<p>This command lets you source the completion script to a particular place.
+Defaults is to use <code>/etc/bash_completion.d</code> dir if it exists, and fallback to
+~/.bashrc or ~/.zshrc files.</p>
+<h3>tabtab uninstall</h3>
+<pre><code>$ tabtab uninstall foobar
+</code></pre>
+<p>Attemps to uninstall a previous tabtab install. <code>tabtab install</code> adds an entry
+to an internal registry of completions, to be able to undo the operation on
+uninstall.</p>
+<h3>tabtab ...</h3>
+<ul>
+<li>tabtab list</li>
+<li>tabtab search</li>
+<li>tabtab add</li>
+<li>tabtab rm/remove</li>
+</ul>
+<h2>npm scripts</h2>
+<p>Using npm's install/uninstall script, you can automatically manage completion
+for your program whenever it gets globally installed or removed.</p>
+<pre><code class="language-json">{
+  &quot;scripts&quot;: {
+    &quot;install&quot;: &quot;tabtab install&quot;,
+    &quot;uninstall&quot;: &quot;tabtab uninstall&quot;
+  }
+}
+</code></pre>
+<p>On install, npm will execute the <code>tabtab install</code> command automatically in the
+context of your package.</p>
+<p>Ex.</p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;foobar&quot;,
+  &quot;bin&quot;: &quot;bin/foobar&quot;,
+  &quot;scripts&quot;: {
+    &quot;install&quot;: &quot;tabtab install&quot;,
+    &quot;uninstall&quot;: &quot;tabtab uninstall&quot;
+  },
+  &quot;dependencies&quot;: {
+    &quot;tabtab&quot;: &quot;^1.0.0&quot;
+  }
+}
+</code></pre>
+<p>It will writes the output of <code>tabtab completion --name foobar</code> to
+<code>/etc/bash_completion.d/foobar</code> and enable completion for your program
+automatically whenever a user install your package, and undo the operation if
+removed.</p>
+<h2>API</h2>
+<blockquote>
+<p>old stuff</p>
+</blockquote>
+<h3>complete</h3>
+<p>Main completion method, has support for installation and actual completion.</p>
+<pre><code>tabtab.complete(completed, completer, callback);
+</code></pre>
+<ul>
+<li>completed: name of the command to complete</li>
+<li>completer: <em>Optional</em> name of the command to call on completion (when
+not set, completed and completer are the same)</li>
+<li>callback: get called when a tab-completion command  happens.</li>
+</ul>
+<p>completed and completer are there only to set up and build the correct
+bash/zsh script, based on the <code>lib/completion.sh</code> template (which is
+based on npm's completion shell script)</p>
+<h3>log</h3>
+<p>Helper to return completion output and log to standard output.</p>
+<pre><code>tabtab.log(['list', 'of', 'values'], data, prefix);
+</code></pre>
+<ul>
+<li>values: Array of values to complete against.</li>
+<li>data: the data object returned by the complete callback, used mainly
+to filter results accordingly upon the text that is supplied by the
+user.</li>
+<li>prefix: <em>Optional</em> a prefix to add to the completion results, useful
+for options to add dashes (eg. <code>-</code> or <code>--</code>).</li>
+</ul>
+<h3>parseOut</h3>
+<p>Helper to return the list of short and long options, parsed from the
+usual <code>--help</code> output of a command (cake/rake -H, vagrant, commander -h,
+optimist.help(), ...)</p>
+<pre><code>var parsed = completion.parseOut(optimist.help());
+console.log(parsed.shorts);
+console.log(parsed.longs);
+</code></pre>
+<p>Using a spawned process:</p>
+<pre><code>exec('rake -H', function(err, stdout, stderr) {
+  if(err) return;
+  var parsed = parseOut(stdout);
+  if(/^--\w?/.test(o.last)) return log(parsed.longs, data, '--');
+  if(/^-\w?/.test(o.last)) return log(parsed.shorts, data, '-');
+});
+</code></pre>
+<h3>parseTasks</h3>
+<p>same purpose as parseOut, but for parsing tasks from an help command
+(cake/rake -T, vagrant, etc.)</p>
+<p>exec('cake', function(err, stdout, stderr) {
+if(err) return;
+var parsed = tasks = parseTasks(stdout, 'cake');
+log(tasks, o);
+});</p>
+<ul>
+<li>stdout: string of help output.</li>
+<li>prefix: prefix used internally to build the RegExp that is used to
+parse tasks from stdout.</li>
+</ul>
+<h2>Credits</h2>
+<p>npm does pretty amazing stuff with its completion feature. Bash and zsh
+provides command tab-completion, which allow you to complete the names
+of commands in your $PATH.  Usually these functions means bash
+scripting, and in the case of npm, it is partially true.</p>
+<p>There is a special <code>npm completion</code> command you may want to look around,
+if not already.</p>
+<pre><code>npm completion
+</code></pre>
+<p>Running this should dump <a href="https://raw.github.com/isaacs/npm/caafb7323708e113d100e3e8145b949ed7a16c22/lib/utils/completion.sh">this
+script</a>
+to the console. This script works with both bash/zsh and map the correct
+completion functions to the npm executable. These functions takes care
+of parsing the <code>COMP_*</code> variables available when hitting TAB to complete
+a command, set them up as environment variables and run the <code>npm completion</code> command followed by <code>-- words</code> where words match value of
+the command being completed.</p>
+<p>This means that using this technique npm manage to perform bash/zsh
+completion using node and JavaScript. Actually, the comprehensiveness of npm
+completion is quite amazing.</p>
+<p>This whole package/module is based entirely on npm's code and @isaacs
+work.</p>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+  <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+  <script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

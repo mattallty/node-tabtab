@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>tabtab</title>
+  <meta name="description" content="tab completion helpers, for node cli programs. Inspired by npm completion.">
+  <meta name="viewport" content="width=device-width">
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-deep_orange.min.css">
+
+  <style>
+  .tomdox-main {
+    margin: 10px;
+    padding: 40px;
+  }
+
+  .mdl-layout__drawer-button { display: none; }
+  @media (max-width: 1025px) {
+    .mdl-layout__drawer-button { display: block; }
+  }
+
+  .tomdox .mdl-layout__content {
+    background-color: #f2f2f2;
+  }
+
+  .tomdox-main {
+    background-color: #fff;
+  }
+
+  .tomdox .mdl-layout-title a {
+    text-decoration: none;
+  }
+
+  .tomdox .mdl-layout-title .material-icons {
+    vertical-align: text-top;
+  }
+
+  .tomdoc pre {
+    padding: 16px;
+  }
+  </style>
+
+</head>
+<body>
+  <div class="tomdox mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+        <div class="mdl-layout-spacer"></div>
+      </div>
+    </header>
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <a href="https://mklabs.github.io/tabtab/">tabtab</a>
+        <i class="material-icons">keyboard_tab</i>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="https://mklabs.github.io/tabtab/lib/complete/index.html">lib/complete.js</a>
+        <a class="mdl-navigation__link" href="https://mklabs.github.io/tabtab/lib/debug/index.html">lib/debug.js</a>
+        <a class="mdl-navigation__link" href="https://mklabs.github.io/tabtab/lib/index.html">lib/index.js</a>
+        <a class="mdl-navigation__link" href="https://mklabs.github.io/tabtab/lib/commands/index.html">lib/commands/index.js</a>
+      </nav>
+    </div>
+    <main class="mdl-layout__content">
+      <div class="page-content tomdox-main mdl-shadow--4dp">
+        <div class="tomdox-item">
+          <h3>Commands </h3>
+
+          <p class="tomdox-item-description">
+            Commands class that defines the various command available with tabtab(1)
+          </p>
+
+          <pre class="mdl-shadow--4dp"><code class="javascript">// TODO: document all methods
+var commands &#x3D; new Commands({});
+commands.install();</code></pre>
+
+
+
+        </div>
+        <div class="tomdox-item">
+          <h3>constructor(options) </h3>
+
+          <p class="tomdox-item-description">
+            Creates a new command instance. this.complete is an instance of Complete.
+          </p>
+
+
+
+
+        </div>
+        <div class="tomdox-item">
+          <h3>install(options) </h3>
+
+          <p class="tomdox-item-description">
+            Fow now, just output to the console
+          </p>
+
+
+
+
+        </div>
+        <div class="tomdox-item">
+          <h3>completion(options) </h3>
+
+          <p class="tomdox-item-description">
+            Delegates to this.handle
+          </p>
+
+
+
+
+        </div>
+        <div class="tomdox-item">
+          <h3>uninstall() {} </h3>
+
+          <p class="tomdox-item-description">
+            to be implemented.
+          </p>
+
+
+
+
+        </div>
+        <div class="tomdox-item">
+          <h3>search() {} </h3>
+
+          <p class="tomdox-item-description">
+            to be implemented.
+          </p>
+
+
+
+
+        </div>
+        <div class="tomdox-item">
+          <h3>list() {} </h3>
+
+          <p class="tomdox-item-description">
+            to be implemented.
+          </p>
+
+
+
+
+        </div>
+        <div class="tomdox-item">
+          <h3>add() {} </h3>
+
+          <p class="tomdox-item-description">
+            to be implemented.
+          </p>
+
+
+
+
+        </div>
+        <div class="tomdox-item">
+          <h3>rm() {} </h3>
+
+          <p class="tomdox-item-description">
+            to be implemented.
+          </p>
+
+
+
+
+        </div>
+        <div class="tomdox-item">
+          <h3>help() </h3>
+
+          <p class="tomdox-item-description">
+            --help output
+          </p>
+
+
+
+          <p>
+            Returns the String output
+          </p>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+  <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+  <script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
